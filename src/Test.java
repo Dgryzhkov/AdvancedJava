@@ -1,53 +1,32 @@
-
+import java.util.Scanner;
 
 public class Test {
-    public static void main(String[] args) throws InterruptedException {
-        myThread myThread= new myThread();
+    public static void main(String[] args) {
+        MyThread myThread = new MyThread();
         myThread.start();
-        myThread myThread1=new myThread();
-        myThread1.start();
-        for (int i=0; i<10;i++){
-            System.out.println("ggggg");
-        }
-        System.out.println("1235465465465464");
-        Thread.sleep(1000);
-        System.out.println("999999999999999999999999");
 
-        Thread thread123 = new Thread(new Runner());
-        thread123.start();
-        System.out.println("999999999999999999999999");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+        myThread.shutdown();
+
     }
-
 }
 
-class Runner implements Runnable{
+class MyThread extends Thread {
+    private volatile boolean  running = true;
 
-    @Override
     public void run() {
-        for (int i=0; i<100;i++){
+        while (running) {
+            System.out.println("Hello");
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("14352345234532452345 "+i+ " " +this);
-        }
-
-    }
-}
-
-
-class myThread extends Thread {
-    @Override
-    public void run() {
-        for (int i=0; i<100;i++){
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println("Hello "+i+ " " +this);
         }
     }
-}
 
+    public void shutdown() {
+        this.running = false;
+    }
+}
