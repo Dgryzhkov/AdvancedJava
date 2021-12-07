@@ -1,34 +1,27 @@
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Test {
     public static void main(String[] args) {
-
-        // лекция про тестирование
-        MyThread myThread = new MyThread();
-        myThread.start();
-
-        Scanner scanner = new Scanner(System.in);
-        scanner.nextLine();
-        myThread.shutdown();
-
+        List<Integer> linkedList = new LinkedList<>();
+        List<Integer> arrayList = new ArrayList<>();
+        measureTime(linkedList);
+        measureTime(arrayList);
     }
-}
 
-class MyThread extends Thread {
-    private volatile boolean  running = true;
+    private static void measureTime(List<Integer> list) {
 
-    public void run() {
-        while (running) {
-            System.out.println("Hello");
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < 100000; i++) {
+            list.add(0, i);
         }
-    }
+//         for (int i =0; i< 100000;i++){
+//             list.get(i);
+//         }
+        long end = System.currentTimeMillis();
 
-    public void shutdown() {
-        this.running = false;
+        System.out.println(end - start);
     }
 }
