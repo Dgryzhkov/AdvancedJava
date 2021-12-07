@@ -1,22 +1,23 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Test {
     public static void main(String[] args) {
-       MyLinkedList myLinkedList = new MyLinkedList();
-       myLinkedList.add(1);
-       myLinkedList.add(2);
-       myLinkedList.add(10);
+        Map<Integer, String> map=new HashMap<>();
 
-        System.out.println(myLinkedList);
-        System.out.println(myLinkedList.get(0));
-        System.out.println(myLinkedList.get(1));
-        System.out.println(myLinkedList.get(2));
-        myLinkedList.remove(1);
-        System.out.println(myLinkedList);
-        myLinkedList.remove(0);
-        System.out.println(myLinkedList);
+        map.put(1,"Один");
+        map.put(2,"Два");
+        map.put(3,"Три");
+//
+//
+//        System.out.println(map);
+//        map.put(3,"Другое значение ля ключа 3");
+//        System.out.println(map);
+//
+//        System.out.println(map.get(1));
 
+        for(Map.Entry<Integer, String> entry: map.entrySet()){
+            System.out.println(entry.getKey() + " : "+entry.getValue());
+        }
     }
 }
