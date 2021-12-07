@@ -1,23 +1,32 @@
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Test {
     public static void main(String[] args) {
-        Map<Integer, String> map=new HashMap<>();
+        Map<Integer, String> hashMap = new HashMap<>();//внутри не гарантируется никакого порядка
+        Map<Integer, String> linkedHashMap = new LinkedHashMap<>(); // в каком порядке добавлены, в таком и вернутся
+        Map<Integer, String> treeMap = new TreeMap<>(); // пары будут отсортированы по ключу(естественный порядок)
 
-        map.put(1,"Один");
-        map.put(2,"Два");
-        map.put(3,"Три");
-//
-//
-//        System.out.println(map);
-//        map.put(3,"Другое значение ля ключа 3");
-//        System.out.println(map);
-//
-//        System.out.println(map.get(1));
+        testMap(hashMap);
+        System.out.println();
+        testMap(linkedHashMap);
+        System.out.println();
+        testMap(treeMap);
+    }
 
-        for(Map.Entry<Integer, String> entry: map.entrySet()){
-            System.out.println(entry.getKey() + " : "+entry.getValue());
+    public static void  testMap(Map<Integer, String> map){
+        map.put(39,"Bob");
+        map.put(12,"Mike");
+        map.put(78,"Tom");
+        map.put(0,"Tim");
+        map.put(1500,"Lewis");
+        map.put(7,"Bob");
+
+        for(Map.Entry<Integer, String> entry: map.entrySet()) {
+            System.out.println(entry.getKey() + " : "+ entry.getValue());
         }
     }
+
 }
