@@ -51,10 +51,21 @@ class Person {
         return name.equals(person.name);
     }
 
+    //{object} ->{int}
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + name.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
+
+    /*
+    Контракт hashcode{} equals{}
+    1) у двух проверенных оъектов вызываем метод hashcode()
+    усли хэши разные -> два объекта разные
+
+    2) если хэши одинаковые -> equals()
+
+    3) equals()->выдает ответ
+    */
 }
