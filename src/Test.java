@@ -4,41 +4,57 @@ import java.util.*;
 
 public class Test {
     public static void main(String[] args) {
-        Set<Integer> set1 = new HashSet<>();
+        Map<Person, String> map = new HashMap<>();
+        Set<Person> set = new HashSet<>();
+
+        Person person1 = new Person(1, "Mike");
+        Person person2 = new Person(1, "Mike");
 
 
-        set1.add(0);
-        set1.add(1);
-        set1.add(2);
-        set1.add(3);
-        set1.add(4);
-        set1.add(5);
+        map.put(person1, "123");
+        map.put(person2, "123");
 
-        Set<Integer> set2 = new HashSet<>();
-        set2.add(2);
-        set2.add(3);
-        set2.add(4);
-        set2.add(5);
-        set2.add(6);
-        set2.add(7);
-        // union = объединение множеств
+        set.add(person1);
+        set.add(person2);
 
-        Set<Integer> union = new HashSet<>(set1);
+        System.out.println(map);
+        System.out.println(set);
+    }
+}
 
-        union.addAll(set2);
-        System.out.println(union);
+class Person {
+    private int id;
+    private String name;
 
-        // intersection - пересечение множеств
-        Set<Integer> intersection = new HashSet<>(set1);
-        intersection.retainAll(set2);
-        System.out.println(intersection);
+    public Person(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
-        //difference - разность множеств
 
-        Set<Integer> difference = new HashSet<>(set1);
-        difference.removeAll(set2);
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 
-        System.out.println(difference);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Person person = (Person) o;
+
+        if (id != person.id) return false;
+        return name.equals(person.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + name.hashCode();
+        return result;
     }
 }
