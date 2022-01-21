@@ -4,85 +4,57 @@ import java.util.*;
 
 public class Test {
     public static void main(String[] args) {
-        List<String> animals = new ArrayList<>();
-        animals.add("cat");
-        animals.add("dog");
-        animals.add("frog");
-        animals.add("elephant");
-        animals.add("ayay");
 
-        Collections.sort(animals, new StringLenghtComparator());
-        System.out.println(animals);
+        List<Person> peopleList = new ArrayList<>();
+        Set<Person> peopleSet = new TreeSet<>();
 
-        List<Integer> numbers = new ArrayList<>();
+        addElements(peopleList);
+        addElements(peopleSet);
 
-        numbers.add(5);
-        numbers.add(0);
-        numbers.add(500);
-        numbers.add(100);
+        System.out.println(peopleList);
+        System.out.println(peopleSet);
+    }
 
-        Collections.sort(numbers, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                if (o1 > o2) {
-                    return -1;
-                } else if (o1 < o2) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        });
-        System.out.println(numbers);
-
-        List<Person> people= new ArrayList<>();
-        people.add(new Person(1,"Bob"));
-        people.add(new Person(3,"Katy"));
-        people.add(new Person(2,"Mike"));
-
-        Collections.sort(people, new Comparator<Person>() {
-            @Override
-            public int compare(Person o1, Person o2) {
-                if(o1.getId()>o2.getId()) {
-                return 1;
-                } else if (o1.getId()<o2.getId()) {
-                    return -1;
-                } else {
-                    return 0;
-                }
-            }
-        });
-
-        System.out.println(people);
-
+    private  static void  addElements(Collection collection) {
+                collection.add(new Person(2, "Tom"));
+                collection.add(new Person(3,"Katy"));
+                collection.add(new Person(1, "Bo"));
+                collection.add(new Person(4,"Georg"));
     }
 }
 
-class StringLenghtComparator implements Comparator<String> {
 
-    @Override
-    public int compare(String o1, String o2) {
-        if (o1.length() > o2.length()) {
-            return 1;
-        } else if (o1.length() < o2.length()) {
-            return -1;
-        } else {
-            return 0;
-        }
-    }
-}
 
-class Person {
+class Person implements Comparable<Person> {
     private int id;
-    private String name;
+    private  String name;
+
+    public String getName() {
+        return name;
+    }
 
     public Person(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Person person = (Person) o;
+
+        if (id != person.id) return false;
+        return name != null ? name.equals(person.name) : person.name == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -92,17 +64,21 @@ class Person {
                 ", name='" + name + '\'' +
                 '}';
     }
-}
-/*
-class BackwardsIntegerComparator implements Comparator<Integer>{
+
+    public int getId() {
+        return id;
+    }
+
     @Override
-    public int compare(Integer o1, Integer o2) {
-        if (o1>o2) {
-            return -1;
-        } else if (o1<o2) {
+    public int compareTo(@NotNull Person o) {
+        if (this.name.length()>o.getName().length()) {
             return 1;
+        } else if (this.name.length()<o.getName().length()) {
+            return -1;
         } else {
             return 0;
         }
     }
-}*/
+
+
+}
