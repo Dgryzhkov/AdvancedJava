@@ -5,37 +5,18 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 public class Test {
     public static void main(String[] args) {
-        Person person1 = new Person(1);
-        Person person2 = new Person(2);
-        Person person3 = new Person(3);
-        Person person4 = new Person(4);
+        Stack<Integer> stack = new Stack<>();
+        stack.push(1);
+        stack.push(5);
+        stack.push(10);
 
-        Queue<Person>people = new ArrayBlockingQueue<Person>(3);
-        System.out.println(people.offer(person4));
-        System.out.println(people.offer(person2));
-        System.out.println(people.offer(person3));
-        System.out.println(people.offer(person1));
+        /*System.out.println(stack.peek());
+        System.out.println(stack.pop());
+*/
 
-        System.out.println(people.remove());
-        System.out.println(people.peek());
-        System.out.println(people);
-/*        for (Person person: people)
-        System.out.println(person);*/
-    }
-}
-
-class Person {
-    private int id;
-
-    public Person(int id) {
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "id=" + id +
-                '}';
+        while (!stack.empty()) {
+            System.out.println(stack.pop());
+        }
     }
 }
 
