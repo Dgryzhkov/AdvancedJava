@@ -1,84 +1,42 @@
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class Test {
     public static void main(String[] args) {
+        Person person1 = new Person(1);
+        Person person2 = new Person(2);
+        Person person3 = new Person(3);
+        Person person4 = new Person(4);
 
-        List<Person> peopleList = new ArrayList<>();
-        Set<Person> peopleSet = new TreeSet<>();
+        Queue<Person>people = new ArrayBlockingQueue<Person>(3);
+        System.out.println(people.offer(person4));
+        System.out.println(people.offer(person2));
+        System.out.println(people.offer(person3));
+        System.out.println(people.offer(person1));
 
-        addElements(peopleList);
-        addElements(peopleSet);
-
-        System.out.println(peopleList);
-        System.out.println(peopleSet);
-    }
-
-    private  static void  addElements(Collection collection) {
-                collection.add(new Person(2, "Tom"));
-                collection.add(new Person(3,"Katy"));
-                collection.add(new Person(1, "Bo"));
-                collection.add(new Person(4,"Georg"));
+        System.out.println(people.remove());
+        System.out.println(people.peek());
+        System.out.println(people);
+/*        for (Person person: people)
+        System.out.println(person);*/
     }
 }
 
-
-
-class Person implements Comparable<Person> {
+class Person {
     private int id;
-    private  String name;
 
-    public String getName() {
-        return name;
-    }
-
-    public Person(int id, String name) {
+    public Person(int id) {
         this.id = id;
-        this.name = name;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Person person = (Person) o;
-
-        if (id != person.id) return false;
-        return name != null ? name.equals(person.name) : person.name == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
     }
 
     @Override
     public String toString() {
         return "Person{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 '}';
     }
-
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public int compareTo(@NotNull Person o) {
-        if (this.name.length()>o.getName().length()) {
-            return 1;
-        } else if (this.name.length()<o.getName().length()) {
-            return -1;
-        } else {
-            return 0;
-        }
-    }
-
-
 }
+
+
