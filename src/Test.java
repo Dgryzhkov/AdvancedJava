@@ -1,22 +1,33 @@
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
+
 
 public class Test {
     public static void main(String[] args) {
-        Stack<Integer> stack = new Stack<>();
-        stack.push(1);
-        stack.push(5);
-        stack.push(10);
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
 
-        /*System.out.println(stack.peek());
-        System.out.println(stack.pop());
-*/
+        Iterator<Integer> iterator = list.iterator();
 
-        while (!stack.empty()) {
-            System.out.println(stack.pop());
+        int idx=0;
+        // Before Java 5
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+            if (idx==1)
+            iterator.remove();
+
+            idx++;
         }
+        System.out.println(list);
+
+        //Java 5
+//        for (int x : list) {
+//
+//            System.out.println(x);
+//        }
     }
 }
 
