@@ -1,54 +1,32 @@
+import java.util.Scanner;
 
 public class Test {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
 
-//        MyThread myThread = new MyThread();
-//        myThread.start();
-//        System.out.println(" 12352363");
-//        MyThread2 myThread2 = new MyThread2();
-//        myThread2.start();
-//        System.out.println("a am sleep");
-//        Thread.sleep(3000);
-//        System.out.println("a am awake");
-        Thread thread = new Thread(new Runner());
-        thread.start();
-    }
-}
+        MyThread myThread = new MyThread();
+        myThread.start();
+        Scanner scanner=new Scanner(System.in);
+        scanner.nextLine();
+        myThread.shutdown();
 
-class Runner implements Runnable{
-
-    @Override
-    public void run() {
-
-        for (int i = 0; i < 1000; i++) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println(i + 10);
-        }
     }
 }
 
 class MyThread extends Thread {
+    private  volatile boolean running = true;// volatile не будет кэшироваться, всегда будет находится в главной памяти
+    @Override
     public void run() {
-        for (int i = 0; i < 1000; i++) {
-            System.out.println(i + 1000);
+        while (running) {
+            System.out.println("Hello");
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
-}
 
-class MyThread2 extends Thread {
-    public void run() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        for (int i = 0; i < 1000; i++) {
-            System.out.println(i);
-
-        }
+    public  void  shutdown(){
+        this.running=false;
     }
 }
