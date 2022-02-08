@@ -1,61 +1,84 @@
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 
 public class Test {
     public static void main(String[] args) throws InterruptedException {
-        Task task = new Task();
+/*        Semaphore semaphore = new Semaphore(3); // 3 разрешения
+        try {
+            semaphore.acquire();
+            semaphore.acquire();
+            semaphore.acquire();
+            System.out.println(" All permits have been acquired");
+            semaphore.acquire();
+            System.out.println("Can't reach here...");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        semaphore.release();
 
-        Thread thread1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                task.firstThread();
 
-            }
-        });
-        Thread thread2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                task.secondThread();
+        System.out.println(semaphore.availablePermits());*/
 
-            }
-        });
+        ExecutorService executorService = Executors.newFixedThreadPool(200);
+        Connection connection = Connection.getConnection();
 
-        thread1.start();
-        thread2.start();
-        thread1.join();
-        thread2.join();
-
-        task.showCounter();
+        for (int i = 0; i < 200; i++) {
+            executorService.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        connection.work();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+        executorService.shutdown();
+        executorService.awaitTermination(1, TimeUnit.DAYS);
     }
 }
 
-class Task{
-    private int counter;
+//синглтон
+class Connection {
+    private static Connection connection = new Connection();
 
-    private Lock lock = new ReentrantLock();
+    private int connectionsCount;
 
-    private void increment(){
-        for (int i=0;i<10000;i++){
-            counter++;
-        }
+    private Semaphore semaphore = new Semaphore(10);
+
+    private Connection() {
+
     }
 
-     public void firstThread(){
-        lock.lock();
-        increment();
-        lock.unlock();
-     }
+    public static Connection getConnection() {
+        return connection;
+    }
 
-     public void secondThread(){
-        lock.lock();
-        increment();
-        lock.unlock();
-     }
-     public void showCounter(){
-         System.out.println(counter);
-     }
+    public void work() throws InterruptedException {
+        semaphore.acquire();
+        try {
+            doWork();
+        }
+        finally {
+            semaphore.release();
+        }
+
+    }
+
+    public void doWork() throws InterruptedException {
+
+        synchronized (this){
+            connectionsCount++;
+            System.out.println(connectionsCount);
+        }
+        Thread.sleep(5000);
+
+        synchronized (this){
+            connectionsCount--;
+
+        }
+    }
 }
