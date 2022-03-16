@@ -1,84 +1,36 @@
-import java.util.concurrent.*;
+import java.util.Random;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-
 public class Test {
     public static void main(String[] args) throws InterruptedException {
-/*        Semaphore semaphore = new Semaphore(3); // 3 разрешения
-        try {
-            semaphore.acquire();
-            semaphore.acquire();
-            semaphore.acquire();
-            System.out.println(" All permits have been acquired");
-            semaphore.acquire();
-            System.out.println("Can't reach here...");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        semaphore.release();
 
 
-        System.out.println(semaphore.availablePermits());*/
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Random random = new Random();
+                for (int i = 0; i < 1_000_000_000; i++) {
 
-        ExecutorService executorService = Executors.newFixedThreadPool(200);
-        Connection connection = Connection.getConnection();
-
-        for (int i = 0; i < 200; i++) {
-            executorService.submit(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        connection.work();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    if (Thread.currentThread().isInterrupted()) {
+                        System.out.println("Thread was interrupted");
+                        break;
                     }
+
+                    Math.sin(random.nextDouble());
                 }
-            });
-        }
-        executorService.shutdown();
-        executorService.awaitTermination(1, TimeUnit.DAYS);
-    }
-}
+            }
+        });
 
-//синглтон
-class Connection {
-    private static Connection connection = new Connection();
+        System.out.println("Starting thread");
 
-    private int connectionsCount;
+        thread.start();
 
-    private Semaphore semaphore = new Semaphore(10);
+        Thread.sleep(1000);
+        thread.interrupt();
 
-    private Connection() {
+        thread.join();
 
-    }
-
-    public static Connection getConnection() {
-        return connection;
-    }
-
-    public void work() throws InterruptedException {
-        semaphore.acquire();
-        try {
-            doWork();
-        }
-        finally {
-            semaphore.release();
-        }
-
-    }
-
-    public void doWork() throws InterruptedException {
-
-        synchronized (this){
-            connectionsCount++;
-            System.out.println(connectionsCount);
-        }
-        Thread.sleep(5000);
-
-        synchronized (this){
-            connectionsCount--;
-
-        }
+        System.out.println("Thread has finished");
     }
 }
