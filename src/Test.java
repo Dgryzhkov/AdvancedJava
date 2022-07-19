@@ -1,55 +1,24 @@
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.awt.*;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.*;
 
 public class Test {
 
     public static void main(String[] args) {
-        /*
-            \\d- одна цифра
-            \\w - одна английская буква
-            \\w=[a-zA-Z]
 
-            + - 1 или более
-            * - 0 или более
-            ? - 0 или 1 символов до
+        String a = "Hello1231there1321321hey";
+        String[] words = a.split("\\d+");
+        System.out.println(Arrays.toString(words));
 
-            ( | )  -  одна строка из множества строк
+        String b ="Hello12312312there123123123hey";
 
-            [a-zA-Z] - все английские буквы
-
-            [^abc] - мы хотим все символы кроме abc
-
-
-           . - любой символ
-
-           {2} - 2  символа до
-           {2,} - от 2 символов
-           {2, 4} - от 2 до 4 символов
-
-         */
-
-        String a ="-1";
-        String b = "2";
-        String c = "+3";
-        System.out.println(a.matches("(-|\\+|)?\\d+"));
-        System.out.println(b.matches("(-|\\+|)?\\d+"));
-        System.out.println(c.matches("(-|\\+|)?\\d+"));
-
-        String d ="PaaaSSS312321/+-*";
-        System.out.println(d.matches("[a-zA-Z0-9\\-\\+\\*\\/]+"));
-
-        String e = "hello";
-
-        System.out.println(e.matches("[^abc]*"));
-
-        String url = "http://www.google.ru";
-
-        System.out.println(url.matches("http://www\\..+\\.(com|ru)"));
-
-
+        String modifiedString = b.replaceAll("\\d+", ".");
+        System.out.println(modifiedString);
+        String modifiedString2 = b.replaceFirst("\\d+", "-");
+        System.out.println(modifiedString2);
     }
-
 }
