@@ -1,40 +1,55 @@
+import org.jetbrains.annotations.VisibleForTesting;
+
+import java.awt.*;
 import java.util.Random;
 import java.util.concurrent.*;
 
 public class Test {
 
     public static void main(String[] args) {
+        /*
+            \\d- одна цифра
+            \\w - одна английская буква
+            \\w=[a-zA-Z]
 
-        ExecutorService executorService = Executors.newFixedThreadPool(1);
-        Future<Integer> future = executorService.submit(() -> {
-            System.out.println("Starting");
+            + - 1 или более
+            * - 0 или более
+            ? - 0 или 1 символов до
 
-            Thread.sleep(500);
+            ( | )  -  одна строка из множества строк
 
-            System.out.println("Finished");
+            [a-zA-Z] - все английские буквы
 
-            Random random = new Random();
-            int randomValue = random.nextInt();
-
-            if (randomValue < 5)
-                throw new Exception("Something bad happened");
-
-            return random.nextInt(10);
-        });
+            [^abc] - мы хотим все символы кроме abc
 
 
-        executorService.shutdown();
+           . - любой символ
 
-        try {
-            int result = future.get(); // get  дожидается окончание выполненя потока
-            System.out.println(result);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (ExecutionException e) {
-            Throwable ex = e.getCause();
-            System.out.println(ex.getMessage());
+           {2} - 2  символа до
+           {2,} - от 2 символов
+           {2, 4} - от 2 до 4 символов
 
-        }
+         */
+
+        String a ="-1";
+        String b = "2";
+        String c = "+3";
+        System.out.println(a.matches("(-|\\+|)?\\d+"));
+        System.out.println(b.matches("(-|\\+|)?\\d+"));
+        System.out.println(c.matches("(-|\\+|)?\\d+"));
+
+        String d ="PaaaSSS312321/+-*";
+        System.out.println(d.matches("[a-zA-Z0-9\\-\\+\\*\\/]+"));
+
+        String e = "hello";
+
+        System.out.println(e.matches("[^abc]*"));
+
+        String url = "http://www.google.ru";
+
+        System.out.println(url.matches("http://www\\..+\\.(com|ru)"));
+
+
     }
 
 }
