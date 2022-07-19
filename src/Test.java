@@ -1,24 +1,18 @@
-import org.jetbrains.annotations.VisibleForTesting;
-
-import java.awt.*;
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.concurrent.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Test {
-
     public static void main(String[] args) {
+        String text = " Hello, Guys! A Send you my email joe@gmail.com so we can\n" +
+                "keep in touch. Thanks, Joe! That's cool. I am sending you\n" +
+                "my address: tim@yandex.ru. Let's stay in touch...";
 
-        String a = "Hello1231there1321321hey";
-        String[] words = a.split("\\d+");
-        System.out.println(Arrays.toString(words));
+        Pattern email = Pattern.compile("(\\w+)@(gmail|yandex)\\.(com|ru)");
+        Matcher matcher = email.matcher(text);
 
-        String b ="Hello12312312there123123123hey";
+        while (matcher.find()){
+            System.out.println(matcher.group());
+        }
 
-        String modifiedString = b.replaceAll("\\d+", ".");
-        System.out.println(modifiedString);
-        String modifiedString2 = b.replaceFirst("\\d+", "-");
-        System.out.println(modifiedString2);
     }
 }
