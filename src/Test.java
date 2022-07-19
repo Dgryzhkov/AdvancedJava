@@ -1,36 +1,40 @@
 import java.util.Random;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.*;
 
 public class Test {
-    public static void main(String[] args) throws InterruptedException {
 
+    public static void main(String[] args) {
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Random random = new Random();
-                for (int i = 0; i < 1_000_000_000; i++) {
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        Future<Integer> future = executorService.submit(() -> {
+            System.out.println("Starting");
 
-                    if (Thread.currentThread().isInterrupted()) {
-                        System.out.println("Thread was interrupted");
-                        break;
-                    }
+            Thread.sleep(500);
 
-                    Math.sin(random.nextDouble());
-                }
-            }
+            System.out.println("Finished");
+
+            Random random = new Random();
+            int randomValue = random.nextInt();
+
+            if (randomValue < 5)
+                throw new Exception("Something bad happened");
+
+            return random.nextInt(10);
         });
 
-        System.out.println("Starting thread");
 
-        thread.start();
+        executorService.shutdown();
 
-        Thread.sleep(1000);
-        thread.interrupt();
+        try {
+            int result = future.get(); // get  дожидается окончание выполненя потока
+            System.out.println(result);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            Throwable ex = e.getCause();
+            System.out.println(ex.getMessage());
 
-        thread.join();
-
-        System.out.println("Thread has finished");
+        }
     }
+
 }
