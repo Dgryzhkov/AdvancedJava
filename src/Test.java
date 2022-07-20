@@ -1,18 +1,63 @@
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
+/*interface Executable {
+    int execute(int x, int y);
+}
+
+class Runner {
+    public void run(Executable e) {
+       int a= e.execute(10, 20);
+        System.out.println(a);
+    }
+}*/
 public class Test {
     public static void main(String[] args) {
-        String text = " Hello, Guys! A Send you my email joe@gmail.com so we can\n" +
-                "keep in touch. Thanks, Joe! That's cool. I am sending you\n" +
-                "my address: tim@yandex.ru. Let's stay in touch...";
+/*            Runner runner = new Runner();
 
-        Pattern email = Pattern.compile("(\\w+)@(gmail|yandex)\\.(com|ru)");
-        Matcher matcher = email.matcher(text);
+            runner.run(new Executable() {
+                @Override
+                public int execute(int x, int y) {
+                    return x+y+10;
+                }
+            });
 
-        while (matcher.find()){
-            System.out.println(matcher.group());
-        }
+           final int a=1;
+            runner.run((x,y)->x+y+10+a);
+            */
+
+        List<String> list = new ArrayList<>();
+        list.add("Hello");
+        list.add("Goodbye");
+        list.add("a");
+        list.add("ab");
+
+/*           list.sort(new Comparator<String>() {
+               @Override
+               public int compare(String o1, String o2) {
+                   if (o1.length()>o2.length()){
+                       return 1;
+                   } else if (o1.length()<o2.length()){
+                       return -1;
+                   } else {
+                       return 0;
+                   }
+               }
+           });*/
+
+        // можно укоротить сорт
+        list.sort((s1, s2) -> {
+            if (s1.length() > s2.length()) {
+                return 1;
+            } else if (s1.length() < s2.length()) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+
+        System.out.println(list);
 
     }
 }
